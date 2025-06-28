@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Niva - Personalized Learning</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,78 +40,135 @@
         #lesson-content-container code { background-color: #e2e8f0; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: monospace; }
         #lesson-content-container pre { background-color: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; overflow-x: auto; }
         #feedback-container strong { color: #1e293b; }
-
+        
         /* Chatbox styles */
-        #chatbox {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            max-width: calc(100% - 40px);
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            transform: translateY(20px);
-            opacity: 0;
-            z-index: 100;
-        }
-        #chatbox.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        #chat-header {
-            background-color: #4f46e5;
-            color: white;
-            padding: 1rem;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #chat-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            height: 300px;
-        }
         .chat-message {
-            margin-bottom: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            max-width: 85%;
-            line-height: 1.4;
+            padding: 0.5rem 1rem;
+            border-radius: 1.5rem;
+            margin-bottom: 0.5rem;
+            /* Use a combination of max-width and `word-break` for better wrapping */
+            max-width: 90%; /* Adjusted for better fitting */
+            word-break: break-word; /* Force breaking of long words that don't fit */
+            overflow-wrap: break-word; /* Modern property for word breaking */
+            min-width: 0; /* Allow flex item to shrink below its content size */
         }
         .user-message {
-            background-color: #eef2ff; /* indigo-100 */
-            color: #3730a3; /* indigo-800 */
+            background-color: #4f46e5;
+            color: white;
             align-self: flex-end;
-            margin-left: auto;
+            border-bottom-right-radius: 0;
         }
-        .ai-message {
-            background-color: #f1f5f9; /* slate-100 */
-            color: #1e293b; /* slate-800 */
+        .bot-message {
+            background-color: #e2e8f0;
+            color: #1e293b;
             align-self: flex-start;
+            border-bottom-left-radius: 0;
         }
-        #chat-input-container {
-            border-top: 1px solid #e2e8f0; /* slate-200 */
-            padding: 0.75rem;
+
+        /* Adjusted layout for lesson and quiz screens */
+        .lesson-quiz-layout {
+            display: block; /* Revert to block to not interfere with floating chatbox */
+            gap: 1.5rem;
+        }
+
+        /* Floating Chatbox specific styles */
+        .floating-chatbox {
+            position: fixed; /* Makes the chatbox float relative to the viewport */
+            bottom: 1.5rem; /* 6 units from bottom */
+            right: 1.5rem; /* 6 units from right */
+            width: 20rem; /* md:w-80 in Tailwind */
+            max-height: 70vh; /* Maximum height to prevent overflow on smaller screens */
             display: flex;
-            gap: 0.5rem;
+            flex-direction: column;
+            background-color: #e0e7ff; /* bg-indigo-100 */
+            border: 1px solid #c7d2fe; /* border-indigo-200 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            z-index: 1000; /* Ensure it floats above other content */
+            padding: 1.5rem; /* p-6 */
         }
-        #chat-input {
+
+        .floating-chatbox .chat-header {
+            text-align: center;
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #4f46e5; /* text-indigo-700 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+
+        .floating-chatbox .chat-messages-container {
             flex-grow: 1;
-            border: 1px solid #cbd5e1; /* slate-300 */
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.2s;
+            overflow-y: auto;
+            margin-bottom: 1rem; /* mb-4 */
+            padding: 0.5rem; /* p-2 */
+            display: flex;
+            flex-direction: column;
+            background-color: #fff; /* bg-white */
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); /* shadow-inner */
+            height: 14rem; /* h-56 */
         }
-        #chat-input:focus {
-            border-color: #4f46e5; /* indigo-500 */
+
+        .floating-chatbox .chat-input-area {
+            display: flex;
+            gap: 0.5rem; /* gap-2 */
+        }
+
+        .floating-chatbox .chat-input {
+            flex-grow: 1;
+            border: 2px solid #a5b4fc; /* border-indigo-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.75rem; /* p-3 */
+            font-size: 1.125rem; /* text-lg */
+            outline: none;
+        }
+        .floating-chatbox .chat-input:focus {
+            ring-2: #6366f1; /* focus:ring-indigo-500 */
+            border-color: #6366f1; /* focus:border-indigo-500 */
+        }
+
+        .floating-chatbox .send-button {
+            background-color: #4f46e5; /* bg-indigo-600 */
+            color: white;
+            font-weight: 700; /* font-bold */
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            transition: all 0.2s ease-in-out; /* transition-all */
+            transform: none; /* transform */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .floating-chatbox .send-button:hover {
+            background-color: #4338ca; /* hover:bg-indigo-700 */
+            transform: scale(1.05); /* hover:scale-105 */
+        }
+
+        /* Floating Chat Icon Button */
+        #chat-toggle-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: #4f46e5; /* bg-indigo-600 */
+            color: white;
+            border-radius: 50%;
+            width: 3.5rem; /* w-14 */
+            height: 3.5rem; /* h-14 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* text-2xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            z-index: 1001; /* Above chatbox */
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        #chat-toggle-btn:hover {
+            background-color: #4338ca; /* hover:bg-indigo-700 */
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -117,6 +176,7 @@
 
     <div id="main-container" class="max-w-6xl w-full mx-auto">
 
+        <!-- Screen 1: Welcome -->
         <div id="welcome-screen" class="screen text-center space-y-8">
             <header>
                 <h1 class="text-4xl md:text-5xl font-bold text-indigo-600">Welcome to Niva</h1>
@@ -130,23 +190,27 @@
             </div>
         </div>
 
+        <!-- Screen 2: Learning Style Quiz -->
         <div id="quiz-screen" class="screen hidden">
              <div class="bg-white p-6 rounded-xl shadow-lg space-y-6">
                  <div class="flex justify-between items-center"><h2 class="text-2xl font-bold text-indigo-600">Learning Style Quiz</h2><p id="question-counter" class="text-sm font-medium text-slate-500"></p></div>
                  <div class="w-full bg-slate-200 rounded-full h-2.5"><div id="progress-bar" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
                  <div><p id="question-text" class="text-lg font-semibold mb-4"></p><div id="options-container" class="space-y-3"></div></div>
-             </div>
+            </div>
         </div>
         
+        <!-- Screen 3: Quiz Result -->
         <div id="result-screen" class="screen hidden text-center space-y-6">
             <div class="bg-white p-8 rounded-xl shadow-lg"><h2 class="text-3xl font-bold">We've found your learning style!</h2><div class="mt-6"><p class="text-lg">You are a...</p><h3 id="learning-style-result" class="text-4xl font-bold text-indigo-600 my-2"></h3><p id="learning-style-description" class="text-slate-600 max-w-md mx-auto"></p></div><button id="proceed-to-subjects-btn" class="mt-8 w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">Choose a Subject</button></div>
         </div>
 
+        <!-- Screen 4: Subject Selection -->
         <div id="subject-screen" class="screen hidden">
             <div class="text-center"><h2 class="text-3xl font-bold">What would you like to learn today?</h2><p class="mt-2 text-slate-500">Your lesson will be tailored to your <span id="style-in-prompt" class="font-bold text-indigo-600"></span> style.</p></div>
             <div id="subject-grid" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"></div>
         </div>
         
+        <!-- Screen 5: Topic Input -->
         <div id="topic-screen" class="screen hidden">
             <div class="bg-white p-8 rounded-xl shadow-lg text-center">
                 <h2 class="text-3xl font-bold">What topic are you interested in?</h2>
@@ -155,13 +219,14 @@
                     <p><span class="font-semibold text-slate-500">Subject:</span> <span id="topic-final-subject" class="font-bold text-indigo-600"></span></p>
                 </div>
                 <p class="text-slate-500 mb-4">Please be specific, or get some ideas!</p>
-                <input type="text" id="topic-input" class="w-full border-2 border-slate-300 rounded-lg p-3 text-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Write your topic here">
+                <input type="text" id="topic-input" class="w-full border-2 border-slate-300 rounded-lg p-3 text-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="write your topic here...">
                 <button id="suggest-topics-btn" class="mt-4 w-full bg-amber-500 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-amber-600">✨ Suggest Topics</button>
                 <div id="topic-suggestions-container" class="mt-4 flex flex-wrap justify-center gap-2"></div>
                 <button id="generate-lesson-btn" class="mt-6 w-full bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">Generate Lesson</button>
             </div>
         </div>
 
+        <!-- Screen 6: Loading Spinner -->
         <div id="loading-screen" class="screen hidden text-center space-y-6">
             <div class="bg-white p-8 rounded-xl shadow-lg">
                 <div class="flex justify-center items-center space-x-2">
@@ -171,32 +236,32 @@
             </div>
         </div>
 
+        <!-- Screen 7: Lesson View -->
         <div id="lesson-screen" class="screen hidden">
              <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                 <h2 class="text-3xl font-bold mb-4">Your Personalized Lesson</h2>
-                 <div id="lesson-content-container" class="prose max-w-none"></div>
-                 <div class="mt-8 flex flex-wrap gap-4">
-                     <button id="start-lesson-quiz-btn" class="flex-grow bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700">Test Your Knowledge</button>
-                     <button id="eli5-btn" class="flex-grow bg-sky-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-sky-600">✨ Explain Like I'm 5</button>
-                     <button id="restore-lesson-btn" class="flex-grow bg-slate-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-slate-600 hidden">🔄 Restore Original Lesson</button>
-                     <button id="open-chat-btn" class="flex-grow bg-purple-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700">💬 Chat About This Lesson</button>
-                 </div>
-             </div>
+                <h2 class="text-3xl font-bold mb-4">Your Personalized Lesson</h2>
+                <div id="lesson-content-container" class="prose max-w-none"></div>
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <button id="start-lesson-quiz-btn" class="flex-grow bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700">Test Your Knowledge</button>
+                    <button id="eli5-btn" class="flex-grow bg-sky-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-sky-600">✨ Explain Like I'm 5</button>
+                    <button id="restore-lesson-btn" class="flex-grow bg-slate-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-slate-600 hidden">🔄 Restore Original Lesson</button>
+                </div>
+            </div>
         </div>
         
+        <!-- Screen 8: Lesson Quiz -->
         <div id="lesson-quiz-screen" class="screen hidden">
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold mb-6">Check Your Understanding</h2>
+                <!-- The form to hold all quiz questions -->
                 <form id="lesson-quiz-form" class="space-y-6"></form>
                 <div class="mt-8 text-center">
                     <button id="submit-lesson-quiz-btn" class="w-full bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-700">Submit Answers</button>
                 </div>
-                <div class="mt-4 text-center">
-                     <button id="open-chat-quiz-btn" class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700 mt-4">💬 Ask a Question</button>
-                </div>
             </div>
         </div>
 
+        <!-- Screen 9: Final Score -->
         <div id="score-screen" class="screen hidden">
             <div class="bg-white p-8 rounded-xl shadow-lg text-center">
                 <h2 class="text-3xl font-bold">Quiz Complete!</h2>
@@ -211,18 +276,41 @@
         </div>
     </div>
 
-    <div id="chatbox" class="hidden">
-        <div id="chat-header">
-            <span>Ask me anything!</span>
-            <button id="close-chat-btn" class="text-2xl leading-none">&times;</button>
+    <!-- Floating Chat Icon Button -->
+    <button id="chat-toggle-btn" class="hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+            <path fill-rule="evenodd" d="M4.848 2.771A9.165 9.165 0 0 1 12 1.5c4.46 0 8.216 2.923 9.402 6.942.235.793.147 1.637-.175 2.417a8.969 8.969 0 0 1-5.698 5.922 3.6 3.6 0 0 0-1.052.793 1.25 1.25 0 0 1-.849.337c-.365 0-.717-.13-.984-.361l-.907-.793a.75.75 0 0 0-1.025.101 12.356 12.356 0 0 1-3.626 2.472.75.75 0 0 0-.214.939l.564 1.488c.215.566.082 1.234-.356 1.631a.75.75 0 0 1-1.065.05L3.63 20.893a.75.75 0 0 1-.013-1.054l1.13-1.13a.75.75 0 0 0-.17-.962 9.166 9.166 0 0 1-1.206-5.679c0-2.61.942-5.027 2.515-6.942Z" clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <!-- Floating Chatbox for Lesson Screen -->
+    <div id="floating-lesson-chatbox" class="floating-chatbox hidden">
+        <h3 class="chat-header">Ask Your Tutor!</h3>
+        <div id="lesson-chat-messages-container" class="chat-messages-container">
+            <!-- Chat messages will appear here -->
         </div>
-        <div id="chat-messages" class="flex flex-col space-y-3">
-            </div>
-        <div id="chat-input-container">
-            <input type="text" id="chat-input" placeholder="Type your message...">
-            <button id="send-chat-btn" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700">Send</button>
+        <div class="chat-input-area">
+            <input type="text" id="lesson-chat-input" class="chat-input" placeholder="Ask about the lesson...">
+            <button id="send-lesson-chat-btn" class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.917H1.75a.75.75 0 0 0 0 1.5h2.614l-2.432 7.917a.75.75 0 0 0 .926.94 1 1 0 0 0 .167-.02l18.58-9.421a1 1 0 0 0 0-1.854L3.645 2.424a1 1 0 0 0-.167-.019Z" /></svg>
+            </button>
         </div>
     </div>
+
+    <!-- Floating Chatbox for Quiz Screen -->
+    <div id="floating-quiz-chatbox" class="floating-chatbox hidden">
+        <h3 class="chat-header">Ask Your Tutor!</h3>
+        <div id="quiz-chat-messages-container" class="chat-messages-container">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="quiz-chat-input" class="chat-input" placeholder="Ask about the quiz...">
+            <button id="send-quiz-chat-btn" class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.917H1.75a.75.75 0 0 0 0 1.5h2.614l-2.432 7.917a.75.75 0 0 0 .926.94 1 1 0 0 0 .167-.02l18.58-9.421a1 1 0 0 0 0-1.854L3.645 2.424a1 1 0 0 0-.167-.019Z" /></svg>
+            </button>
+        </div>
+    </div>
+
 
     <script>
         // --- DOM Elements ---
@@ -238,11 +326,9 @@
             restoreLesson: document.getElementById('restore-lesson-btn'), 
             submitLessonQuiz: document.getElementById('submit-lesson-quiz-btn'), 
             getFeedback: document.getElementById('get-feedback-btn'), 
-            startOver: document.getElementById('start-over-btn'),
-            openChat: document.getElementById('open-chat-btn'),
-            openChatQuiz: document.getElementById('open-chat-quiz-btn'),
-            closeChat: document.getElementById('close-chat-btn'),
-            sendChat: document.getElementById('send-chat-btn'),
+            startOver: document.getElementById('start-over-btn'), 
+            sendLessonChat: document.getElementById('send-lesson-chat-btn'), 
+            sendQuizChat: document.getElementById('send-quiz-chat-btn'), 
         };
         const quizContainer = { questionText: document.getElementById('question-text'), optionsContainer: document.getElementById('options-container'), questionCounter: document.getElementById('question-counter'), progressBar: document.getElementById('progress-bar') };
         const resultElements = { styleResult: document.getElementById('learning-style-result'), styleDescription: document.getElementById('learning-style-description'), };
@@ -253,10 +339,18 @@
         const lessonQuizForm = document.getElementById('lesson-quiz-form'); 
         const finalScoreText = document.getElementById('final-score-text');
         const feedbackContainer = document.getElementById('feedback-container');
-        const chatbox = document.getElementById('chatbox');
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
         
+        // Chatbox specific elements
+        const floatingLessonChatbox = document.getElementById('floating-lesson-chatbox');
+        const lessonChatInput = document.getElementById('lesson-chat-input');
+        const lessonChatMessagesContainer = document.getElementById('lesson-chat-messages-container');
+        
+        const floatingQuizChatbox = document.getElementById('floating-quiz-chatbox');
+        const quizChatInput = document.getElementById('quiz-chat-input');
+        const quizChatMessagesContainer = document.getElementById('quiz-chat-messages-container');
+
+        const chatToggleButton = document.getElementById('chat-toggle-btn');
+
 
         // --- Data & State ---
         // Reduced to 5 questions for learning style quiz
@@ -282,7 +376,6 @@
             userQuizAnswers: [], // Stores selected option index for each question in lesson quiz
             currentLessonQuizQuestionIndex: 0, 
             activeScreen: 'welcome', 
-            chatHistory: [],
         };
 
         // --- Core Functions ---
@@ -292,13 +385,17 @@
             screens[screenId].classList.remove('hidden');
             state.activeScreen = screenId;
 
-            // Chatbox functionality
+            // Handle chatbox visibility
             if (screenId === 'lesson' || screenId === 'lessonQuiz') {
-                // Don't automatically show, wait for user to click
+                chatToggleButton.classList.remove('hidden'); // Show toggle button
+                // Hide both chatboxes initially when screen changes, toggle button will open them
+                floatingLessonChatbox.classList.add('hidden'); 
+                floatingQuizChatbox.classList.add('hidden');
             } else {
-                hideChatbox();
+                chatToggleButton.classList.add('hidden'); // Hide toggle button
+                floatingLessonChatbox.classList.add('hidden');
+                floatingQuizChatbox.classList.add('hidden');
             }
-
 
             // Use a short timeout to allow the DOM to update before calculating height
             setTimeout(() => {
@@ -320,14 +417,18 @@
                 lessonQuizData: [], 
                 userQuizAnswers: [], 
                 currentLessonQuizQuestionIndex: 0, 
-                activeScreen: 'welcome',
-                chatHistory: [],
+                activeScreen: 'welcome' 
             };
             topicElements.input.value = '';
             topicElements.suggestionsContainer.innerHTML = '';
             feedbackContainer.innerHTML = '';
-            chatMessages.innerHTML = '';
-            hideChatbox();
+            
+            // Clear chat messages and input on reset
+            if (lessonChatMessagesContainer) lessonChatMessagesContainer.innerHTML = '';
+            if (lessonChatInput) lessonChatInput.value = '';
+            if (quizChatMessagesContainer) quizChatMessagesContainer.innerHTML = '';
+            if (quizChatInput) quizChatInput.value = '';
+
             showScreen('welcome');
         }
 
@@ -338,7 +439,7 @@
                 calculateResult(); 
                 return; 
             } 
-            const question = learningStyleQuizQuestions[state.currentQuestionIndex]; // Use learningStyleQuizQuestions
+            const question = learningStyleQuizQuestions[state.currentQuestionIndex]; 
             quizContainer.questionText.textContent = question.question; 
             quizContainer.optionsContainer.innerHTML = ''; 
             question.options.forEach(option => { 
@@ -351,7 +452,7 @@
             quizContainer.questionCounter.textContent = `Question ${state.currentQuestionIndex + 1} of ${learningStyleQuizQuestions.length}`; 
             quizContainer.progressBar.style.width = `${((state.currentQuestionIndex) / learningStyleQuizQuestions.length) * 100}%`; 
         }
-        function selectAnswer(style) { state.scores[style]++; state.currentQuestionIndex++; displayLearningStyleQuestion(); } // Call displayLearningStyleQuestion
+        function selectAnswer(style) { state.scores[style]++; state.currentQuestionIndex++; displayLearningStyleQuestion(); } 
         function calculateResult() { state.userLearningStyle = Object.keys(state.scores).reduce((a, b) => state.scores[a] > state.scores[b] ? a : b); resultElements.styleResult.textContent = state.userLearningStyle; resultElements.styleDescription.textContent = styleDescriptions[state.userLearningStyle]; quizContainer.progressBar.style.width = '100%'; showScreen('result'); }
 
         // --- Subject & Topic Flow ---
@@ -360,21 +461,12 @@
 
         // --- Gemini API Call Function ---
         async function callGemini(prompt, schema = null) {
-            const apiKey = "AIzaSyAv3PkQan3RpuSgwa3NY39xUyfHkuu60BM"; // IMPORTANT: Replace with your actual API key
-            if (apiKey === "YOUR_API_KEY") {
-                alert("Please replace 'YOUR_API_KEY' with your actual Google AI Studio API key in the script.");
-                throw new Error("API key not set.");
-            }
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const apiKey = "AIzaSyAv3PkQan3RpuSgwa3NY39xUyfHkuu60BM"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
             };
-
-            if (state.chatHistory.length > 0) {
-                payload.contents = [...state.chatHistory, ...payload.contents];
-            }
-
 
             if (schema) {
                 payload.generationConfig = {
@@ -395,12 +487,24 @@
             }
             
             const result = await response.json();
-            if (!result.candidates || !result.candidates[0].content) {
-                console.error("Invalid API response structure:", result);
-                throw new Error("Invalid API response received.");
-            }
             return result.candidates[0].content.parts[0].text;
         }
+
+        // --- GOOGLE SEARCH API Call Function for images ---
+        async function searchImage(query) {
+            // This is a placeholder for actual Google Search API call or a proxy.
+            // In a real application, you'd use a backend to call Google Custom Search API or similar.
+            // For this environment, we'll simulate it by returning a placeholder URL or a highly generic one.
+            console.warn("Simulating image search. In a real app, this would call a search API.");
+            const encodedQuery = encodeURIComponent(query);
+            // Using placehold.co to generate dynamic placeholder images based on description
+            // For a 'real' image, you'd integrate with a search API here.
+            // Example: return `https://api.unsplash.com/search/photos?query=${encodedQuery}&client_id=YOUR_UNSPLASH_ACCESS_KEY`
+            // This is complex and requires a server-side component and API keys.
+            // For the purpose of this demo, we'll return a robust placeholder that hints at the image content.
+            return `https://placehold.co/600x400/cccccc/000000?text=${encodedQuery.replace(/\+/g, '%20')}`; 
+        }
+
 
         // --- New Feature: Topic Suggester ---
         async function handleSuggestTopics() {
@@ -449,15 +553,98 @@
             } 
             loadingText.textContent = "Crafting your lesson..."; 
             showScreen('loading'); 
-            // The prompt now strictly enforces generating only one type of lesson.
-            const prompt = `Generate a comprehensive lesson in HTML format, perfectly tailored to a "${state.userLearningStyle}" learning style. The subject is "${state.userSelectedSubject}" and the specific topic is "${state.userTopic}". Ensure the lesson structure and content ONLY and STRICTLY align with this style. Do NOT include elements or suggestions for other learning styles.
-            - If the learning style is "Visual", prioritize vivid descriptions of diagrams, charts, and visual aids (use placeholders like "[Diagram of X showing Y]"). Use clear, concise language to describe what a visual learner would see. Emphasize layout that uses visual breaks and graphical elements, even if represented textually. Focus on imagery, colors, and spatial arrangements.
-            - If the learning style is "Auditory", structure the lesson as if it's a script for a podcast or a verbal explanation. Use a conversational tone, clear transitions, and suggestions for listening activities or discussions. Encourage reading aloud or discussing the material. Focus on sounds, rhythm, and spoken words.
-            - If the learning style is "Reading/Writing", provide a highly structured text with explicit headings, subheadings, bullet points, numbered lists, definitions of key terms, summary sections, and opportunities for note-taking. Emphasize reading comprehension and written exercises like summaries or essays. Focus on textual information, clarity, and organization.
-            - If the learning style is "Kinesthetic", include detailed descriptions of simple, hands-on activities, experiments, or interactive exercises the user can perform to understand the concepts. Focus on practical application, movement, and active engagement with the material.
-            Do not include <html>, <head>, or <body> tags. Just provide the content that can be placed inside a div.`; 
+            
+            let lessonPrompt;
+            if (state.userLearningStyle === "Visual") {
+                // Modified prompt to generate placeholders that will be used for image search
+                lessonPrompt = `Generate a comprehensive lesson in HTML format, perfectly tailored to a "Visual" learning style. The subject is "${state.userSelectedSubject}" and the specific topic is "${state.userTopic}". Intersperse descriptive text with explicit placeholders for diagrams or charts. For example, instead of describing a diagram, write ONLY "[IMAGE_SEARCH: A diagram showing X and Y relationship]". Make sure to include at least 3-5 distinct IMAGE_SEARCH placeholders. Focus on layout that uses visual breaks. Do not include <html>, <head>, or <body> tags. Just provide the content that can be placed inside a div.`;
+            } else {
+                // Original prompts for other styles
+                lessonPrompt = `Generate a comprehensive lesson in HTML format, perfectly tailored to a "${state.userLearningStyle}" learning style. The subject is "${state.userSelectedSubject}" and the specific topic is "${state.userTopic}". Ensure the lesson structure and content ONLY and STRICTLY align with this style. Do NOT include elements or suggestions for other learning styles.
+                - If the learning style is "Auditory", structure the lesson as if it's a script for a podcast or a verbal explanation. Use a conversational tone, clear transitions, and suggestions for listening activities or discussions. Encourage reading aloud or discussing the material. Focus on sounds, rhythm, and spoken words.
+                - If the learning style is "Reading/Writing", provide a highly structured text with explicit headings, subheadings, bullet points, numbered lists, definitions of key terms, summary sections, and opportunities for note-taking. Emphasize reading comprehension and written exercises like summaries or essays. Focus on textual information, clarity, and organization.
+                - If the learning style is "Kinesthetic", include detailed descriptions of simple, hands-on activities, experiments, or interactive exercises the user can perform to understand the concepts. Focus on practical application, movement, and active engagement with the material.
+                Do not include <html>, <head>, or <body> tags. Just provide the content that can be placed inside a div.`;
+            }
+
             try { 
-                const generatedHtml = await callGemini(prompt); 
+                let generatedHtml = await callGemini(lessonPrompt); 
+                
+                // If Visual learner, try to fetch images for placeholders
+                if (state.userLearningStyle === "Visual") {
+                    loadingText.textContent = "Fetching visuals from the web..."; // Update loading text
+                    // Use a temporary div to parse the HTML string into a DOM structure
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = generatedHtml;
+
+                    // Find all text nodes that might contain the placeholder
+                    // We iterate through all child nodes to catch text directly in the div or inside paragraphs etc.
+                    const allNodes = Array.from(tempDiv.querySelectorAll('*')).concat(tempDiv);
+                    for (const node of allNodes) {
+                        // Create a NodeIterator to efficiently find text nodes
+                        const iterator = document.createNodeIterator(
+                            node,
+                            NodeFilter.SHOW_TEXT,
+                            null
+                        );
+                        let textNode;
+                        while ((textNode = iterator.nextNode())) {
+                            const placeholderRegex = /\[IMAGE_SEARCH: (.*?)\]/g;
+                            let match;
+                            let lastIndex = 0;
+                            const fragments = [];
+
+                            // Iterate over all matches in the current text node
+                            while ((match = placeholderRegex.exec(textNode.nodeValue)) !== null) {
+                                // Add text before the current match
+                                if (match.index > lastIndex) {
+                                    fragments.push(document.createTextNode(textNode.nodeValue.substring(lastIndex, match.index)));
+                                }
+
+                                const imageDescription = match[1];
+                                // Create a placeholder for the image while it's loading
+                                const loadingSpan = document.createElement('span');
+                                loadingSpan.textContent = `[Loading image: "${imageDescription}"]`;
+                                loadingSpan.style.color = '#888'; // Grey text
+                                fragments.push(loadingSpan);
+
+                                // Asynchronously search for the image and replace the loading placeholder
+                                searchImage(imageDescription).then(imageUrl => {
+                                    const imgElement = document.createElement('img');
+                                    imgElement.src = imageUrl;
+                                    imgElement.alt = imageDescription;
+                                    imgElement.className = "w-full h-auto rounded-lg shadow-md my-4"; // Tailwind classes
+                                    // Fallback if image fails to load
+                                    imgElement.onerror = function() {
+                                        this.onerror=null;
+                                        this.src=`https://placehold.co/600x400/cccccc/000000?text=Image+Failed:+${encodeURIComponent(imageDescription.substring(0, 20))}...`;
+                                        this.alt=`Failed to load image: ${imageDescription}`;
+                                    };
+                                    loadingSpan.replaceWith(imgElement); // Replace the loading text with the image
+                                }).catch(imageError => {
+                                    console.error(`Error fetching image for "${imageDescription}":`, imageError);
+                                    const errorText = document.createElement('p');
+                                    errorText.className = "text-red-500 text-sm";
+                                    errorText.textContent = `Could not load image: ${imageDescription}`;
+                                    loadingSpan.replaceWith(errorText); // Replace with error message
+                                });
+                                lastIndex = placeholderRegex.lastIndex;
+                            }
+                            // Add any remaining text after the last match
+                            if (lastIndex < textNode.nodeValue.length) {
+                                fragments.push(document.createTextNode(textNode.nodeValue.substring(lastIndex)));
+                            }
+
+                            // Replace the original text node with the new fragments
+                            if (fragments.length > 0) {
+                                fragments.forEach(fragment => textNode.parentNode.insertBefore(fragment, textNode));
+                                textNode.parentNode.removeChild(textNode);
+                            }
+                        }
+                    }
+                    generatedHtml = tempDiv.innerHTML; // Get the updated HTML from the temporary div
+                }
+
                 lessonContentContainer.innerHTML = generatedHtml; 
                 state.generatedLessonText = lessonContentContainer.innerText; 
                 state.originalLessonHtml = generatedHtml; 
@@ -504,65 +691,6 @@
             buttons.eli5.classList.remove('hidden');
             buttons.restoreLesson.classList.add('hidden');
         }
-        
-        // --- Chatbox Functions ---
-        function showChatbox() {
-            chatbox.classList.remove('hidden');
-            setTimeout(() => chatbox.classList.add('visible'), 10); // For transition
-        }
-
-        function hideChatbox() {
-            chatbox.classList.remove('visible');
-             setTimeout(() => chatbox.classList.add('hidden'), 300); // Match transition duration
-        }
-        
-        function clearAndShowChatbox() {
-            state.chatHistory = [];
-            chatMessages.innerHTML = '';
-            showChatbox();
-        }
-
-        function addMessageToChat(message, sender) {
-            const messageEl = document.createElement('div');
-            messageEl.className = `chat-message ${sender === 'user' ? 'user-message' : 'ai-message'}`;
-            messageEl.textContent = message;
-            chatMessages.appendChild(messageEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to bottom
-        }
-
-        async function handleSendMessage() {
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
-
-            addMessageToChat(userMessage, 'user');
-            state.chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-            chatInput.value = '';
-            chatInput.disabled = true;
-            buttons.sendChat.disabled = true;
-
-            try {
-                 let contextPrompt;
-                if (state.activeScreen === 'lesson') {
-                    contextPrompt = `You are a helpful teaching assistant. The user is currently learning about "${state.userTopic}" in the subject of "${state.userSelectedSubject}". Their learning style is "${state.userLearningStyle}". The original lesson content is below. Answer their questions based on this context. \n\nLesson Content:\n${state.generatedLessonText}\n\nUser's question: ${userMessage}`;
-                } else if (state.activeScreen === 'lessonQuiz') {
-                     contextPrompt = `You are a helpful teaching assistant. The user is currently taking a quiz on "${state.userTopic}". The quiz questions are listed below. Help them understand the concepts behind the questions without giving away direct answers. \n\nQuiz Content:\n${JSON.stringify(state.lessonQuizData, null, 2)}\n\nUser's question: ${userMessage}`;
-                } else {
-                    contextPrompt = userMessage; // Fallback
-                }
-                
-                const aiResponse = await callGemini(contextPrompt);
-                addMessageToChat(aiResponse, 'ai');
-                state.chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
-            } catch (error) {
-                console.error("Error in chat:", error);
-                addMessageToChat("Sorry, I'm having trouble connecting. Please try again.", 'ai');
-            } finally {
-                chatInput.disabled = false;
-                buttons.sendChat.disabled = false;
-                chatInput.focus();
-            }
-        }
-
 
         // --- Quiz Generation & Full Quiz Display ---
         async function handleQuizGeneration() { 
@@ -728,16 +856,79 @@
             }
         }
 
-        
-        // --- Event Listeners ---
-        mainContainer.addEventListener('click', (e) => {
-            const targetId = e.target.id;
-            if (targetId.startsWith('open-chat')) {
-                 clearAndShowChatbox();
-                 return;
+        // --- Chatbox Functions ---
+        function addMessageToChat(message, isUser, container) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
+            // Use textContent to prevent HTML injection and ensure plain text display
+            messageElement.textContent = message; 
+            container.appendChild(messageElement);
+            // Ensure proper scrolling to the very bottom, using smooth scroll behavior
+            container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+        }
+
+        async function handleChatQuery(chatInputElem, chatMessagesContainerElem) {
+            const userQuery = chatInputElem.value.trim();
+            if (!userQuery) return;
+
+            addMessageToChat(userQuery, true, chatMessagesContainerElem);
+            chatInputElem.value = ''; // Clear input immediately
+            chatInputElem.disabled = true;
+            // Access buttons directly from the global 'buttons' object
+            const sendButton = chatInputElem.id === 'lesson-chat-input' ? buttons.sendLessonChat : buttons.sendQuizChat;
+            sendButton.disabled = true;
+
+            // Add a temporary loading message from the bot
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('chat-message', 'bot-message', 'italic', 'text-slate-500');
+            loadingMessage.textContent = 'Thinking...';
+            chatMessagesContainerElem.appendChild(loadingMessage);
+            chatMessagesContainerElem.scrollTo({ top: chatMessagesContainerElem.scrollHeight, behavior: 'smooth' });
+
+
+            let promptContext = '';
+            // Check if lesson text exists before forming context
+            if (state.generatedLessonText && state.generatedLessonText.trim() !== '') {
+                if (state.activeScreen === 'lesson') {
+                    promptContext = `The user is currently learning about "${state.userTopic}" from the following lesson text:\n---\n${state.generatedLessonText}\n---`;
+                } else if (state.activeScreen === 'lessonQuiz') {
+                    const quizQuestionsText = state.lessonQuizData.map((q, i) => `${i + 1}. ${q.question} Options: ${q.options.join(', ')}`).join('\n');
+                    promptContext = `The user is currently taking a quiz on "${state.userTopic}". The quiz questions are:\n---\n${quizQuestionsText}\n---\nLesson Text (for general context if needed):\n---\n${state.generatedLessonText}\n---`;
+                }
+            } else {
+                // If no lesson text, prompt for general assistance or guide to lesson generation
+                promptContext = `No specific lesson material is currently loaded. The user is asking a question. Please provide a general helpful answer or suggest generating a lesson first.`;
             }
 
-            switch(targetId) {
+            const prompt = `You are a helpful study assistant. Your primary goal is to assist the user with learning.
+            ${promptContext}
+            
+            Based on the provided context (if any), please answer the user's question.
+            If the question is completely irrelevant to any loaded material, instead of refusing, try to answer generally or gently redirect them by saying something like: "That's an interesting question! While I'm here to help with your current lesson, I can tell you about [general topic related to their question] or help you generate a new lesson on any topic. What would you like to explore next?"
+            
+            User's question: "${userQuery}"
+            
+            Your answer:`;
+
+            try {
+                const response = await callGemini(prompt);
+                // Remove the loading message before adding the actual response
+                chatMessagesContainerElem.removeChild(loadingMessage);
+                addMessageToChat(response, false, chatMessagesContainerElem);
+            } catch (error) {
+                console.error("Error in chat query:", error);
+                chatMessagesContainerElem.removeChild(loadingMessage); // Remove loading message even on error
+                addMessageToChat("Sorry, I'm having trouble answering right now. Please try again later.", false, chatMessagesContainerElem);
+            } finally {
+                chatInputElem.disabled = false;
+                sendButton.disabled = false;
+                chatInputElem.focus();
+            }
+        }
+
+        // --- Event Listeners ---
+        mainContainer.addEventListener('click', (e) => {
+            switch(e.target.id) {
                 case 'start-quiz-btn': startQuiz(); break;
                 case 'proceed-to-subjects-btn': populateSubjects(); break;
                 case 'suggest-topics-btn': handleSuggestTopics(); break;
@@ -751,14 +942,41 @@
             }
         });
 
-        buttons.closeChat.addEventListener('click', hideChatbox);
-        buttons.sendChat.addEventListener('click', handleSendMessage);
-        chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
+        // Event listener for the main chat toggle button
+        if (chatToggleButton) { 
+            chatToggleButton.addEventListener('click', () => {
+                const targetChatbox = state.activeScreen === 'lesson' ? floatingLessonChatbox : floatingQuizChatbox;
+                targetChatbox.classList.toggle('hidden');
+
+                if (!targetChatbox.classList.contains('hidden')) {
+                    const inputElement = state.activeScreen === 'lesson' ? lessonChatInput : quizChatInput;
+                    inputElement.focus();
+                }
+            });
+        }
+
+
+        // Event listeners for floating chatbox buttons
+        if (buttons.sendLessonChat) {
+            buttons.sendLessonChat.addEventListener('click', () => handleChatQuery(lessonChatInput, lessonChatMessagesContainer));
+            lessonChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleChatQuery(lessonChatInput, lessonChatMessagesContainer);
+                }
+            });
+        }
+        if (buttons.sendQuizChat) {
+            buttons.sendQuizChat.addEventListener('click', () => handleChatQuery(quizChatInput, quizChatMessagesContainer));
+            quizChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleChatQuery(quizChatInput, quizChatMessagesContainer);
+                }
+            });
+        }
         
+        // --- Initial Call ---
         window.onload = () => showScreen('welcome');
     </script>
 </body>
