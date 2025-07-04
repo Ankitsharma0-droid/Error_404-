@@ -461,9 +461,7 @@
 
         // --- Gemini API Call Function ---
         async function callGemini(prompt, schema = null) {
-            const apiKey = "AIzaSyAv3PkQan3RpuSgwa3NY39xUyfHkuu60BM"; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
+          
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
             };
