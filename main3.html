@@ -460,7 +460,7 @@
         function selectSubject(subject) { state.userSelectedSubject = subject; topicElements.finalStyle.textContent = state.userLearningStyle; topicElements.finalSubject.textContent = state.userSelectedSubject; showScreen('topic'); }
 
         // --- Gemini API Call Function ---
-        async function callGemini(prompt, schema = null) {
+      {
           
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -479,10 +479,6 @@
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`API request failed with status ${response.status}: ${errorBody}`);
-            }
             
             const result = await response.json();
             return result.candidates[0].content.parts[0].text;
